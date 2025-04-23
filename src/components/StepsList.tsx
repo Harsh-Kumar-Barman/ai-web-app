@@ -11,7 +11,7 @@ interface StepsListProps {
 export function StepsList({ steps, currentStep, onStepClick }: StepsListProps) {
   return (
 
-    <div className="bg-gray-900 rounded-lg shadow-lg p-4 h-[70vh] overflow-auto">
+    <div className="bg-black rounded-lg shadow-lg p-4 h-[70vh] overflow-auto">
     <h2 className="text-lg font-semibold mb-4 text-gray-100">Build Steps</h2>
     <div className="space-y-4">
       {steps.map((step,index) => (
@@ -20,7 +20,7 @@ export function StepsList({ steps, currentStep, onStepClick }: StepsListProps) {
           className={`p-1 rounded-lg cursor-pointer transition-colors ${
             currentStep === step.id
               ? 'bg-gray-800 border border-gray-700'
-              : 'hover:bg-gray-800'
+              : 'hover:bg-zinc-800'
           }`}
           onClick={() => onStepClick(step.id)}
         >

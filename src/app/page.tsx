@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { Aperture, ArrowRight, Link as Laaa } from "lucide-react"
+import { Aperture, ArrowRight, Clipboard, Link as Laaa } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { FaDiscord } from "react-icons/fa";
@@ -39,12 +39,13 @@ export default function Home() {
         <div className=" top-4 left-6">
           <Link href={'/'} className="text-white font-bold text-xl">bolt</Link>
         </div>
+        <div className="absolute left-96 -translate-x-1/2 w-[1000px] h-[1000px] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#2b6cb0] via-transparent to-transparent opacity-30 blur-3xl pointer-events-none"></div>
 
         <div className=" top-4 right-4 flex space-x-2">
           <Link href="https://x.com/" target="_blank" className="text-white">
             <FaXTwitter className="w-4 h-4" />
           </Link>
-          <Link href="https://in.linkedin.com/" target="_blank"  className="text-white">
+          <Link href="https://in.linkedin.com/" target="_blank" className="text-white">
             <FaLinkedin className="w-4 h-4" />
           </Link>
           <Link href="https://discord.com/" target="_blank" className="text-white">
@@ -76,12 +77,15 @@ export default function Home() {
               aria-label="Website description"
             />
             <div className="absolute bottom-4 left-3 flex text-zinc-500">
-              <button type="button" className="p-2 hover:text-zinc-300">
+              <button title="link" type="button" className="p-2 hover:text-zinc-300">
                 <Laaa size={20} />
               </button>
-              <button type="button" className="p-2 hover:text-zinc-300">
+              <button title="file" type="button" className="p-2 hover:text-zinc-300">
                 <Aperture />
               </button>
+              <Link href={'/whiteboard'} className="p-2 hover:text-zinc-300" >
+                <Clipboard className=" w-6 h-6" />
+              </Link>
             </div>
 
             {prompt.trim() && (

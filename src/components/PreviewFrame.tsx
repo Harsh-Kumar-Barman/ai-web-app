@@ -7,6 +7,7 @@ interface PreviewFrameProps {
 }
 
 export function PreviewFrame({ files, webContainer }: PreviewFrameProps) {
+  console.log("preview --->>  ",files[9].children[0].content)
   // In a real implementation, this would compile and render the preview
   const [url, setUrl] = useState("");
 
