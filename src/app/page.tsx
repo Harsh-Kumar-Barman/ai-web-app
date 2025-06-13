@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { Aperture, ArrowRight, Clipboard, Link as Laaa } from "lucide-react"
+import { Aperture, ArrowRight, Clipboard, File, Link as Laaa, Link2, Plus } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { FaDiscord } from "react-icons/fa";
@@ -9,6 +9,14 @@ import { FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaFigma } from "react-icons/fa";
 import Link from "next/link";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 
 
 interface Document {
@@ -20,14 +28,26 @@ interface Document {
 export default function Home() {
   const [prompt, setPrompt] = useState("")
   const [documents, setDocuments] = useState<Document[]>([])
+  const [model, setModel] = useState("gemini-2.0-flash");   // default
   const router = useRouter()
 
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault()
+  //   if (prompt.trim()) {
+  //     router.push(`/builder?prompt=${encodeURIComponent(prompt)}`)
+  //   }
+  // }
+
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (prompt.trim()) {
-      router.push(`/builder?prompt=${encodeURIComponent(prompt)}`)
-    }
-  }
+    e.preventDefault();
+    if (!prompt.trim()) return;
+
+    router.push(
+      `/builder?prompt=${encodeURIComponent(prompt)}&model=${encodeURIComponent(
+        model
+      )}`
+    );
+  };
 
   const handleSuggestionClick = (suggestion: string) => {
     setPrompt(suggestion)
@@ -37,7 +57,7 @@ export default function Home() {
     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-6">
       <div className="w-full flex fixed top-0 justify-between px-5 pt-2 bg-black items-center ">
         <div className=" top-4 left-6">
-          <Link href={'/'} className="text-white font-bold text-xl">bolt</Link>
+          <Link href={'/'} className="text-white font-bold text-xl">HyperGen</Link>
         </div>
         <div className="absolute left-96 -translate-x-1/2 w-[1000px] h-[1000px] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#2b6cb0] via-transparent to-transparent opacity-30 blur-3xl pointer-events-none"></div>
 
@@ -67,7 +87,7 @@ export default function Home() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="w-full">
+        {/* <form onSubmit={handleSubmit} className="w-full">
           <div className="relative mb-8">
             <textarea
               value={prompt}
@@ -97,7 +117,26 @@ export default function Home() {
               </button>
             )}
           </div>
+          <Select
+            value={model}
+            onValueChange={setModel}
+            className="my-4 max-w-xs text-sm"
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Choose Gemini model" />
+            </SelectTrigger>
 
+            <SelectContent>
+              <SelectItem value="gemini-2.0-flash">Gemini 2.0 Flash</SelectItem>
+              <SelectItem value="gemini-2.0-flash-lite">Gemini 2.0 Flash Lite</SelectItem>
+              <SelectItem value="gemini-2.5-flash-preview-05-20">
+                Gemini 2.5 Flash (05‑20 preview)
+              </SelectItem>
+              <SelectItem value="gemini-2.5-flash-preview-04-17">
+                Gemini 2.5 Flash (04‑17 preview)
+              </SelectItem>
+            </SelectContent>
+          </Select>
           <div className="w-11/12 flex flex-wrap gap-3 justify-center">
             <button
               type="button"
@@ -138,7 +177,124 @@ export default function Home() {
           </div>
 
           <p className="text-center text-zinc-500 text-sm mt-6">or start a blank app with your favorite stack</p>
+        </form> */}
+        <form onSubmit={handleSubmit} className="w-full">
+          {/* TEXTAREA -------------------------------------------------------- */}
+          <div className="relative mb-8">
+            <textarea
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              placeholder="How can Bolt help you today?"
+              className="w-full h-32 p-5 bg-zinc-900 tracking-normal border border-zinc-800 rounded-xl outline-none resize-none placeholder-zinc-500 text-md"
+              aria-label="Website description"
+            />
+
+            {/* SINGLE “+” POP‑OVER ----------------------------------------- */}
+            <Popover>
+              {/* TRIGGER: + Icon */}
+              <PopoverTrigger
+                asChild
+                className="absolute bottom-4 left-3"
+              >
+                <button
+                  type="button"
+                  className="p-2 rounded-lg bg-zinc-900 text-white hover:bg-zinc-700 transition-colors"
+                >
+                  <Plus className="h-5 w-5" />
+                </button>
+              </PopoverTrigger>
+
+              {/* CONTENT: Tool icons + model select */}
+              <PopoverContent
+                side="top"
+                align="start"
+                className="bg-zinc-900 border border-zinc-800 p-3 rounded-xl w-64 space-y-3"
+              >
+                {/* TOOL ICONS */}
+                <div className="flex gap-3">
+                  <button
+                    title="Insert link"
+                    type="button"
+                    className="p-2 rounded-md bg-zinc-900 hover:bg-zinc-700 text-white transition-colors"
+                  >
+                    <Link2 size={18} />
+                  </button>
+
+                  <button
+                    title="Upload file"
+                    type="button"
+                    className="p-2 rounded-md bg-zinc-900 hover:bg-zinc-700 text-white transition-colors"
+                  >
+                    <File size={18} />
+                  </button>
+
+                  <Link
+                    href="/whiteboard"
+                    title="Open whiteboard"
+                    className="p-2 rounded-md bg-zinc-900 hover:bg-zinc-700 text-white transition-colors"
+                  >
+                    <Clipboard size={18} />
+                  </Link>
+                </div>
+
+                {/* MODEL SELECT */}
+                <Select value={model} onValueChange={setModel}>
+                  <SelectTrigger className="w-full bg-zinc-900 hover:bg-zinc-700 border border-zinc-700 text-white text-sm rounded-md">
+                    <SelectValue placeholder="Choose Gemini model" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-zinc-900 border border-zinc-700 text-white">
+                    <SelectItem
+                      value="gemini-2.0-flash"
+                      className="hover:bg-zinc-700 text-white cursor-pointer"
+                    >
+                      Gemini 2.0 Flash
+                    </SelectItem>
+                    <SelectItem
+                      value="gemini-2.0-flash-lite"
+                      className="hover:bg-zinc-700 text-white cursor-pointer"
+                    >
+                      Gemini 2.0 Flash Lite
+                    </SelectItem>
+                    <SelectItem
+                      value="gemini-2.5-flash-preview-05-20"
+                      className="hover:bg-zinc-700 text-white cursor-pointer"
+                    >
+                      Gemini 2.5 Flash (05‑20 preview)
+                    </SelectItem>
+                    <SelectItem
+                      value="gemini-2.5-flash-preview-04-17"
+                      className="hover:bg-zinc-700 text-white cursor-pointer"
+                    >
+                      Gemini 2.5 Flash (04‑17 preview)
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </PopoverContent>
+            </Popover>
+
+
+            {/* SUBMIT BUTTON ---------------------------------------------- */}
+            {prompt.trim() && (
+              <button
+                type="submit"
+                className="absolute right-4 top-4 bg-blue-400 text-sm p-2 rounded-lg font-medium hover:bg-blue-500 transition-colors"
+              >
+                <ArrowRight />
+              </button>
+            )}
+          </div>
+
+          {/* SUGGESTION BUTTONS (unchanged) ------------------------------- */}
+          <div className="w-11/12 flex flex-wrap gap-3 justify-center mt-4">
+            {/* …existing suggestion buttons… */}
+          </div>
+
+          <p className="text-center text-zinc-500 text-sm mt-6">
+            or start a blank app with your favorite stack
+          </p>
         </form>
+
+
       </div>
     </div>
   )

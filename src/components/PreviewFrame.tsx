@@ -37,6 +37,7 @@ export function PreviewFrame({ files, webContainer }: PreviewFrameProps) {
   return (
     <div className="h-full flex items-center justify-center text-gray-400">
       {!url && <div className="text-center">
+        <div className="w-8 h-8 border-4 border-gray-300 border-t-green-600 rounded-full animate-spin" />
         <p className="mb-2">Loading...</p>
       </div>}
       {url && <iframe width={"100%"} height={"100%"} src={url} />}

@@ -23,6 +23,7 @@ import { saveAs } from 'file-saver';
 export default function Builder() {
   const searchParams = useSearchParams();
   const prompt = searchParams.get('prompt');
+  const modelParam = searchParams.get("model") || "gemini-2.5-flash-preview-05-20"; 
   const [userPrompt, setPrompt] = useState("");
   const [llmMessages, setLlmMessages] = useState<{ role: "user" | "assistant", content: string; }[]>([]);
   const [loading, setLoading] = useState(false);
@@ -228,6 +229,7 @@ export default function Builder() {
 
     setLoading(true);
     const stepsResponse = await axios.post(`/api/chat`, {
+      model:modelParam,
       messages: [...prompts, prompt].map(parts => ({
         role: "user",
         parts
@@ -260,7 +262,7 @@ export default function Builder() {
       <div className="w-full   bg-black border-b border-[#2c2c3a] px-6 py-3 flex justify-between items-center">
         {/* Logo Section */}
         <Link href="/" className="text-white font-bold text-2xl tracking-tight">
-          DevKit
+          HyperGen
         </Link>
 
         {/* Hamburger Icon */}
